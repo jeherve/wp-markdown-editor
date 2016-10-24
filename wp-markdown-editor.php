@@ -15,14 +15,6 @@ if (!function_exists('add_action')) {
     exit;
 }
 
-if (!function_exists('jetpack_require_lib')) {
-    include_once dirname( __FILE__ ) . '/jetpack/require-lib.php';
-}
-
-if (!class_exists('WPCom_Markdown')) {
-    include_once dirname( __FILE__ ) . '/jetpack/markdown/easy-markdown.php';
-}
-
 define('PLUGIN_VERSION', '2.0');
 define('MINIMUM_WP_VERSION', '3.1');
 
@@ -44,7 +36,7 @@ class WpMarkdownEditor
         add_filter('quicktags_settings', array($this, 'quicktags_settings'), $editorId = 'content');
 
         // Load Jetpack Markdown module
-        $this->load_jetpack_markdown_module();
+	add_action( 'init', array( $his, 'load_jetpack_markdown_module' ) );
     }
 
     public static function getInstance()
@@ -75,6 +67,14 @@ class WpMarkdownEditor
 
     function load_jetpack_markdown_module()
     {
+	if ( ! function_exists( 'jetpack_require_lib' ) ) {
+		include_once dirname( __FILE__ ) . '/jetpack/require-lib.php';
+	}
+
+	if ( ! class_exists( 'WPCom_Markdown' ) ) {
+		include_once dirname( __FILE__ ) . '/jetpack/markdown/easy-markdown.php';
+	}
+
         // If the module is active, let's make this active for posting, period.
         // Comments will still be optional.
         add_filter('pre_option_' . WPCom_Markdown::POST_OPTION, '__return_true');
