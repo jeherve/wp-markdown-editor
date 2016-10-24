@@ -36,7 +36,7 @@ class WpMarkdownEditor
         add_filter('quicktags_settings', array($this, 'quicktags_settings'), $editorId = 'content');
 
         // Load Jetpack Markdown module
-	add_action( 'init', array( $his, 'load_jetpack_markdown_module' ) );
+	add_action( 'init', array( $this, 'load_jetpack_markdown_module' ) );
     }
 
     public static function getInstance()
